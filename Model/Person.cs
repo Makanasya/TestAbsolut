@@ -15,7 +15,8 @@ namespace TestAbsolut.Model
         public string Email { get; set; }
         public Adress AdressRegId { get; set; }
         public Adress AdressFactId { get; set; }
-        public List<Doc> Docs { get; set; }
+        public ICollection<Doc> Docs { get; set; }
+        
 
     }
 }

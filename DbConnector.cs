@@ -16,15 +16,12 @@ namespace TestAbsolut
         #region Создание подключения
         public static SqlConnection GetDBConnection(string datasource = @"ANASTASIA_NOTEB\SQLEXPRESS", string database = @"TestAbsolut")
         {
-            if (_dbInstance == null)
-
-            {
-                //комбинируем строку подключения
-                ConnectionString = @"Data Source=" + datasource
+            //комбинируем строку подключения
+            ConnectionString = @"Data Source=" + datasource
                                         + ";Initial Catalog=" + database
                                         + ";Integrated Security=True;Connect Timeout=30;Encrypt = False; TrustServerCertificate = False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
-                _dbInstance = new SqlConnection(ConnectionString);
-            }
+            _dbInstance = new SqlConnection(ConnectionString);
+            
             return _dbInstance;
         } 
         #endregion
@@ -134,6 +131,35 @@ namespace TestAbsolut
                 }
             }
             SaveLastConnection();
+        }
+        #endregion
+
+        #region Проверка есть ли данные по запросу
+        public static object QSelect(string sql = @"SELECT * FROM Document")
+        {
+            object obj = null;
+            GetDBConnection();
+            using (_dbInstance)
+            {
+                _dbInstance.Open();
+                SqlCommand command = new SqlCommand(sql, _dbInstance);
+                SqlDataReader reader = command.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+
+                    while (reader.Read())
+                    {
+                        for (int i = 0; i < reader.FieldCount; i++)
+                        {
+                            obj = reader.GetValue(i);
+                        }
+                    }
+                    reader.Close();
+                }
+            }
+            SaveLastConnection();
+            return obj;
         } 
         #endregion
     }

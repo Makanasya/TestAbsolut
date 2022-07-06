@@ -16,7 +16,6 @@ namespace TestAbsolut.Model
         public int House { get; set; }
         public int Build { get; set; }
         public int Flat { get; set; }
-
-
+        public ICollection<Person> Persons { get; set; }
     }
 }
