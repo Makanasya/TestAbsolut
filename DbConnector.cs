@@ -21,7 +21,7 @@ namespace TestAbsolut
                                         + ";Initial Catalog=" + database
                                         + ";Integrated Security=True;Connect Timeout=30;Encrypt = False; TrustServerCertificate = False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
             _dbInstance = new SqlConnection(ConnectionString);
-            
+            Console.WriteLine("Подключение создано успешно");
             return _dbInstance;
         } 
         #endregion
@@ -54,7 +54,7 @@ namespace TestAbsolut
         //Запросы CRUD
 
         #region Вставка данных
-        public static void QueryInsert(string sql = @"INSERT INTO Document (seria,number,dateStart,dateEnd) VALUES ('22','222','01.01.2000','01.01.2026')")
+        public static void QueryInsert(string sql = @"INSERT INTO Document (seria,number,name, dateStart,dateEnd) VALUES ('22','222','Паспорт','01.01.2000','01.01.2026')")
         {
             GetDBConnection();
 
