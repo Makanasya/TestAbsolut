@@ -11,6 +11,7 @@ namespace TestAbsolut
     internal static class Controller
     {
         private static string table = "";
+
         #region Обновление данных клиента
         public static void UpdatePerson(string filter, Person newp)
         {
@@ -23,9 +24,19 @@ namespace TestAbsolut
             if (newp.Email != null)
                 buildSet.Append(", Email='" + newp.Email + "'");
             if (newp.AdressRegId != null)
-                buildSet.Append(", AdressRegId=" + newp.AdressRegId);
+            {
+                if (DbConnector.QSelect(@"SELECT * FROM Adress WHERE id=" + newp.AdressRegId.Id.ToString()) != null)
+                {
+                    buildSet.Append(", AdressRegId=" + newp.AdressRegId.Id);
+                } 
+            }
             if (newp.AdressFactId != null)
-                buildSet.Append(", AdressFactId=" + newp.AdressFactId);
+            {
+                if (DbConnector.QSelect(@"SELECT * FROM Adress WHERE id=" + newp.AdressFactId.Id.ToString()) != null)
+                {
+                    buildSet.Append(", AdressFactId=" + newp.AdressFactId.Id);
+                }
+            }
             string sql = @"UPDATE " + table + " SET " + buildSet + " WHERE " + filter;
             DbConnector.QueryUpdate(sql);
         } 
@@ -56,13 +67,19 @@ namespace TestAbsolut
             }
             if (newp.AdressRegId != null)
             {
-                buildField.Append(",AdressRegId");
-                buildValue.Append("," + newp.AdressRegId);
+                if (DbConnector.QSelect(@"SELECT * FROM Adress WHERE id=" + newp.AdressRegId.Id.ToString()) != null)
+                {
+                    buildField.Append(",AdressRegId");
+                    buildValue.Append("," + newp.AdressRegId.Id);
+                }
             }
             if (newp.AdressFactId != null)
             {
-                buildField.Append(",AdressFactId");
-                buildValue.Append("," + newp.AdressFactId);
+                if (DbConnector.QSelect(@"SELECT * FROM Adress WHERE id=" + newp.AdressFactId.Id.ToString()) != null)
+                {
+                    buildField.Append(",AdressFactId");
+                    buildValue.Append("," + newp.AdressFactId.Id);
+                }
             }
 
             string sql = @"INSERT INTO " + table + "(" + buildField + ")" + " VALUES " + "(" + buildValue + ")";
